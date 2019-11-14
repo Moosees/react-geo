@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Context from './context';
 import App from './pages/App';
 import Splash from './pages/Splash';
+import ProtectedRoute from './ProtectedRoute';
 import reducer from './reducer';
 import * as serviceWorker from './serviceWorker';
 
@@ -17,7 +18,9 @@ const Root = () => {
       <Context.Provider value={{ state, dispatch }}>
         <Switch>
           <Route exact path="/">
-            <App />
+            <ProtectedRoute>
+              <App />
+            </ProtectedRoute>
           </Route>
           <Route path="/login">
             <Splash />

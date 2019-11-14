@@ -5,7 +5,7 @@ import React, { useContext } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import Context from '../../context';
 import { ME_QUERY } from '../../graphql/queries';
-import { LOGIN_USER } from '../../types';
+import { LOGIN_USER, IS_LOGGED_IN } from '../../types';
 
 const Login = ({ classes }) => {
   const { dispatch } = useContext(Context);
@@ -19,6 +19,7 @@ const Login = ({ classes }) => {
       const { me } = await client.request(ME_QUERY);
 
       dispatch({ type: LOGIN_USER, payload: me });
+      dispatch({ type: IS_LOGGED_IN, payload: user.isSignedIn() });
     } catch (err) {
       handleFailure(err);
     }
@@ -44,6 +45,7 @@ const Login = ({ classes }) => {
         onFailure={handleFailure}
         isSignedIn={true}
         theme="dark"
+        buttonText="Login with Google"
         clientId="979136694083-n0fs310alq1bf5a5dn53ahr3vsr2dpld.apps.googleusercontent.com"
       />
     </div>
