@@ -1,11 +1,11 @@
-import * as actionTypes from './types';
+import * as types from './types';
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case actionTypes.LOGIN_USER:
+const reducer = (state, { type, payload }) => {
+  switch (type) {
+    case types.LOGIN_USER:
       return {
         ...state,
-        currentUser: action.payload
+        currentUser: payload
       };
 
     default:
