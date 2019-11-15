@@ -2,7 +2,7 @@ import { createContext } from 'react';
 
 const Context = createContext({
   currentUser: null,
-  isAuth: false
+  googleUser: null
 });
 
 export default Context;

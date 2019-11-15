@@ -4,7 +4,16 @@ import Context from './context';
 
 const ProtectedRoute = ({ children }) => {
   const { state } = useContext(Context);
-  return state.isAuth ? children : <Redirect to="/login" />;
+  if (!state.googleUser) {
+    return <Redirect to="/login" />;
+  } else if (
+    typeof state.googleUser.isSignedIn === 'function' &&
+    state.googleUser.isSignedIn()
+  ) {
+    return children;
+  } else {
+    return null;
+  }
 };
 
 export default ProtectedRoute;
