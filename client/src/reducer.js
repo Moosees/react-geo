@@ -8,11 +8,18 @@ const reducer = (state, { type, payload }) => {
         currentUser: payload
       };
 
+    case types.LOGOUT_USER:
+      return {
+        ...state,
+        isAuth: false,
+        currentUser: null
+      };
+
     case types.IS_LOGGED_IN:
       return {
         ...state,
         isAuth: payload
-      }
+      };
 
     default:
       return state;
