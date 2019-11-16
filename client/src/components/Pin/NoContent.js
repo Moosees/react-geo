@@ -7,14 +7,14 @@ const NoContent = ({ classes }) => <div>NoContent</div>;
 
 const styles = theme => ({
   root: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "center"
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'center'
   },
   icon: {
-    margin: theme.spacing.unit,
-    fontSize: "80px"
+    margin: theme.spacing(1),
+    fontSize: '80px'
   }
 });
 

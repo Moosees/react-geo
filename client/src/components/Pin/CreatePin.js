@@ -1,5 +1,5 @@
-import React from "react";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
 // import TextField from "@material-ui/core/TextField";
 // import Typography from "@material-ui/core/Typography";
 // import Button from "@material-ui/core/Button";
@@ -14,40 +14,40 @@ const CreatePin = ({ classes }) => {
 
 const styles = theme => ({
   form: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-    paddingBottom: theme.spacing.unit
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    paddingBottom: theme.spacing(1)
   },
   contentField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: "95%"
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: '95%'
   },
   input: {
-    display: "none"
+    display: 'none'
   },
   alignCenter: {
-    display: "flex",
-    alignItems: "center"
+    display: 'flex',
+    alignItems: 'center'
   },
   iconLarge: {
     fontSize: 40,
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing(1)
   },
   leftIcon: {
     fontSize: 20,
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing(1)
   },
   rightIcon: {
     fontSize: 20,
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing(1)
   },
   button: {
-    marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit,
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    marginRight: theme.spacing(1),
     marginLeft: 0
   }
 });
