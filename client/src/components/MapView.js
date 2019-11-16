@@ -9,7 +9,7 @@ import PinIcon from './PinIcon';
 const INITIAL_VIEWPORT = {
   latitude: 52.5686,
   longitude: 12.5387,
-  zoom: 3
+  zoom: 10
 };
 
 const MapView = ({ classes }) => {
@@ -17,23 +17,22 @@ const MapView = ({ classes }) => {
   const [userPos, setUserPos] = useState(null);
 
   useEffect(() => {
+    const getUserPosition = () => {
+      if ('geolocation' in window.navigator) {
+        window.navigator.geolocation.getCurrentPosition(
+          pos => {
+            const { latitude, longitude } = pos.coords;
+            setViewport(prev => ({ ...prev, latitude, longitude }));
+            setUserPos({ latitude, longitude });
+          },
+          err => {
+            console.error(err);
+          }
+        );
+      }
+    };
     getUserPosition();
   }, []);
-
-  const getUserPosition = () => {
-    if ('geolocation' in window.navigator) {
-      window.navigator.geolocation.getCurrentPosition(
-        pos => {
-          const { latitude, longitude } = pos.coords;
-          setViewport({ ...viewport }, latitude, longitude);
-          setUserPos({ latitude, longitude });
-        },
-        err => {
-          console.error(err);
-        }
-      );
-    }
-  };
 
   return (
     <div className={classes.root}>
