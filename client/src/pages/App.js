@@ -1,13 +1,13 @@
 import React from 'react';
 import Header from '../components/Header';
-import Map from '../components/Map';
+import MapView from '../components/MapView';
 import withRoot from '../withRoot';
 
 const App = () => {
   return (
     <>
       <Header />
-      <Map />
+      <MapView />
     </>
   );
 };

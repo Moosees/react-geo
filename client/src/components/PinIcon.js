@@ -1,4 +1,8 @@
-import React from "react";
-// import PlaceTwoTone from "@material-ui/icons/PlaceTwoTone";
+import PlaceTwoTone from '@material-ui/icons/PlaceTwoTone';
+import React from 'react';
 
-export default () => <div>PinIcon</div>;
+const PinIcon = ({ size, color, onClick }) => (
+  <PlaceTwoTone style={{ color, fontSize: size }} onClick={onClick} />
+);
+
+export default PinIcon;
