@@ -1,9 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
-import PinIcon from './PinIcon';
+import React, { useContext, useEffect, useState } from 'react';
+import ReactMapGL, { Marker, NavigationControl } from 'react-map-gl';
 import Context from '../context';
 import { CREATE_DRAFT_PIN, UPDATE_DRAFT_PIN } from '../types';
+import Blog from './Blog';
+import PinIcon from './PinIcon';
 // import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
 // import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
@@ -83,6 +84,7 @@ const MapView = ({ classes }) => {
           </Marker>
         )}
       </ReactMapGL>
+      <Blog />
     </div>
   );
 };
