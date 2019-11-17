@@ -2,7 +2,8 @@ import { createContext } from 'react';
 
 const Context = createContext({
   currentUser: null,
-  googleUser: null
+  googleUser: null,
+  draft: null
 });
 
 export default Context;

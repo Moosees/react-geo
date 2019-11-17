@@ -16,6 +16,24 @@ const reducer = (state, { type, payload }) => {
         googleUser: null
       };
 
+    case types.CREATE_DRAFT_PIN:
+      return {
+        ...state,
+        draft: {
+          longitude: 0,
+          latitude: 0
+        }
+      };
+
+    case types.UPDATE_DRAFT_PIN:
+      return {
+        ...state,
+        draft: {
+          longitude: payload.longitude,
+          latitude: payload.latitude
+        }
+      };
+
     default:
       return state;
   }
