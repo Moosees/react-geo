@@ -6,21 +6,56 @@ import AddAPhotoIcon from '@material-ui/icons/AddAPhotoTwoTone';
 import ClearIcon from '@material-ui/icons/Clear';
 import LandscapeIcon from '@material-ui/icons/LandscapeOutlined';
 import SaveIcon from '@material-ui/icons/SaveTwoTone';
+import axios from 'axios';
+import { GraphQLClient } from 'graphql-request';
 import React, { useContext, useState } from 'react';
 import Context from '../../context';
+import { CREATE_PIN_MUTATION } from '../../graphql/mutations';
 import { DISCARD_DRAFT_PIN } from '../../types';
-import axios from 'axios';
 
 const CreatePin = ({ classes }) => {
-  const { dispatch } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const [title, setTitle] = useState('');
   const [image, setImage] = useState(null);
   const [content, setContent] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async evt => {
     evt.preventDefault();
-    const url = await uploadImage();
-    console.log({ url });
+    setIsSubmitting(true);
+
+    try {
+      const idToken = window.gapi.auth2
+        .getAuthInstance()
+        .currentUser.get()
+        .getAuthResponse().id_token;
+
+      const url = await uploadImage();
+      const { longitude, latitude } = state.draft;
+      const variables = {
+        title,
+        image: url,
+        content,
+        longitude,
+        latitude
+      };
+
+      const client = new GraphQLClient('http://localhost:4000/graphql', {
+        headers: { authorization: idToken }
+      });
+
+      const { createPin } = await client.request(
+        CREATE_PIN_MUTATION,
+        variables
+      );
+
+      console.log({ createPin });
+      setIsSubmitting(false);
+      handleDiscard();
+    } catch (e) {
+      setIsSubmitting(false);
+      console.error('Error creating pin', e);
+    }
   };
 
   const handleDiscard = () => {
@@ -107,7 +142,7 @@ const CreatePin = ({ classes }) => {
           type="submit"
           variant="contained"
           color="secondary"
-          disabled={!title.trim() || !content.trim() || !image}
+          disabled={isSubmitting || !title.trim() || !content.trim() || !image}
         >
           Save Pin
           <SaveIcon className={classes.rightIcon} />
