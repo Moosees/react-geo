@@ -9,6 +9,7 @@ import SaveIcon from '@material-ui/icons/SaveTwoTone';
 import React, { useContext, useState } from 'react';
 import Context from '../../context';
 import { DISCARD_DRAFT_PIN } from '../../types';
+import axios from 'axios';
 
 const CreatePin = ({ classes }) => {
   const { dispatch } = useContext(Context);
@@ -16,9 +17,10 @@ const CreatePin = ({ classes }) => {
   const [image, setImage] = useState(null);
   const [content, setContent] = useState('');
 
-  const handleSubmit = evt => {
+  const handleSubmit = async evt => {
     evt.preventDefault();
-    console.log({ title, image, content });
+    const url = await uploadImage();
+    console.log({ url });
   };
 
   const handleDiscard = () => {
@@ -26,6 +28,20 @@ const CreatePin = ({ classes }) => {
     setImage(null);
     setContent('');
     dispatch({ type: DISCARD_DRAFT_PIN });
+  };
+
+  const uploadImage = async () => {
+    const data = new FormData();
+    data.append('file', image);
+    data.append('upload_preset', 'react-geo');
+    data.append('cloud_name', 'moosees');
+
+    const res = await axios.post(
+      'https://api.cloudinary.com/v1_1/moosees/image/upload',
+      data
+    );
+
+    return res.data.url;
   };
 
   return (
