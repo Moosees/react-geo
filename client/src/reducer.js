@@ -34,6 +34,12 @@ const reducer = (state, { type, payload }) => {
         }
       };
 
+    case types.DISCARD_DRAFT_PIN:
+      return {
+        ...state,
+        draft: null
+      };
+
     default:
       return state;
   }

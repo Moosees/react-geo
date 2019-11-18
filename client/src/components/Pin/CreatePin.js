@@ -6,11 +6,30 @@ import AddAPhotoIcon from '@material-ui/icons/AddAPhotoTwoTone';
 import ClearIcon from '@material-ui/icons/Clear';
 import LandscapeIcon from '@material-ui/icons/LandscapeOutlined';
 import SaveIcon from '@material-ui/icons/SaveTwoTone';
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import Context from '../../context';
+import { DISCARD_DRAFT_PIN } from '../../types';
 
 const CreatePin = ({ classes }) => {
+  const { dispatch } = useContext(Context);
+  const [title, setTitle] = useState('');
+  const [image, setImage] = useState(null);
+  const [content, setContent] = useState('');
+
+  const handleSubmit = evt => {
+    evt.preventDefault();
+    console.log({ title, image, content });
+  };
+
+  const handleDiscard = () => {
+    setTitle('');
+    setImage(null);
+    setContent('');
+    dispatch({ type: DISCARD_DRAFT_PIN });
+  };
+
   return (
-    <form className={classes.form}>
+    <form className={classes.form} onSubmit={handleSubmit}>
       <Typography
         className={classes.alignCenter}
         component="h2"
@@ -21,15 +40,26 @@ const CreatePin = ({ classes }) => {
         Pin Location
       </Typography>
       <div>
-        <TextField name="title" label="Title" placeholder="Add pin title" />
+        <TextField
+          name="title"
+          label="Title"
+          placeholder="Add pin title"
+          value={title}
+          onChange={evt => setTitle(evt.target.value)}
+        />
         <input
           className={classes.input}
           accept="image/*"
           id="image"
           type="file"
+          onChange={evt => setImage(evt.target.files[0])}
         />
         <label htmlFor="image">
-          <Button className={classes.buttonRight} component="span">
+          <Button
+            className={classes.buttonRight}
+            component="span"
+            style={{ color: image && 'green' }}
+          >
             <AddAPhotoIcon className={classes.photoIcon} />
           </Button>
         </label>
@@ -42,6 +72,8 @@ const CreatePin = ({ classes }) => {
           multiline
           rows="6"
           variant="outlined"
+          value={content}
+          onChange={evt => setContent(evt.target.value)}
         />
       </div>
       <div>
@@ -49,6 +81,7 @@ const CreatePin = ({ classes }) => {
           className={classes.buttonLeft}
           variant="contained"
           color="primary"
+          onClick={handleDiscard}
         >
           <ClearIcon className={classes.leftIcon} />
           Discard
@@ -58,6 +91,7 @@ const CreatePin = ({ classes }) => {
           type="submit"
           variant="contained"
           color="secondary"
+          disabled={!title.trim() || !content.trim() || !image}
         >
           Save Pin
           <SaveIcon className={classes.rightIcon} />
