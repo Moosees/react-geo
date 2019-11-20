@@ -11,7 +11,7 @@ import React, { useContext, useState } from 'react';
 import Context from '../../context';
 import { CREATE_PIN_MUTATION } from '../../graphql/mutations';
 import { useGraphql } from '../../hooks/useGraphql';
-import { DISCARD_DRAFT_PIN } from '../../types';
+import { CREATE_PIN, DISCARD_DRAFT_PIN } from '../../types';
 
 const CreatePin = ({ classes }) => {
   const { state, dispatch } = useContext(Context);
@@ -41,7 +41,7 @@ const CreatePin = ({ classes }) => {
         variables
       );
 
-      console.log({ createPin });
+      dispatch({ type: CREATE_PIN, payload: createPin });
       setIsSubmitting(false);
       handleDiscard();
     } catch (e) {

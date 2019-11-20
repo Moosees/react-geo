@@ -2,7 +2,7 @@ import { withStyles } from '@material-ui/core/styles';
 import React, { useContext, useEffect, useState } from 'react';
 import ReactMapGL, { Marker, NavigationControl } from 'react-map-gl';
 import Context from '../context';
-import { CREATE_DRAFT_PIN, UPDATE_DRAFT_PIN } from '../types';
+import { CREATE_DRAFT_PIN, UPDATE_DRAFT_PIN, GET_PINS } from '../types';
 import { GET_PINS_QUERY } from '../graphql/queries';
 import Blog from './Blog';
 import PinIcon from './PinIcon';
@@ -26,12 +26,12 @@ const MapView = ({ classes }) => {
   useEffect(() => {
     const getPins = async () => {
       const { getPins } = await client.request(GET_PINS_QUERY);
-      console.log({ getPins });
+      dispatch({ type: GET_PINS, payload: getPins });
     };
     if (client) {
       getPins();
     }
-  }, [client]);
+  }, [client, dispatch]);
 
   useEffect(() => {
     const getUserPosition = () => {
@@ -96,6 +96,17 @@ const MapView = ({ classes }) => {
             <PinIcon size={40} color={'#f0f'} />
           </Marker>
         )}
+        {state.pins.map(pin => (
+          <Marker
+            key={pin._id}
+            longitude={pin.longitude}
+            latitude={pin.latitude}
+            offsetLeft={-19}
+            offsetTop={-37}
+          >
+            <PinIcon size={40} color={'#03f'} />
+          </Marker>
+        ))}
       </ReactMapGL>
       <Blog />
     </div>

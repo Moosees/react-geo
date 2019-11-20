@@ -40,6 +40,22 @@ const reducer = (state, { type, payload }) => {
         draft: null
       };
 
+    case types.GET_PINS:
+      return {
+        ...state,
+        pins: payload
+      };
+
+    case types.CREATE_PIN:
+      const newPin = payload;
+      const prevPins = state.pins.filter(pin => pin._id !== newPin._id);
+      const newPins = [...prevPins, newPin];
+
+      return {
+        ...state,
+        pins: newPins
+      };
+
     default:
       return state;
   }
