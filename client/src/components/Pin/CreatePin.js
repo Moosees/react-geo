@@ -7,14 +7,15 @@ import ClearIcon from '@material-ui/icons/Clear';
 import LandscapeIcon from '@material-ui/icons/LandscapeOutlined';
 import SaveIcon from '@material-ui/icons/SaveTwoTone';
 import axios from 'axios';
-import { GraphQLClient } from 'graphql-request';
 import React, { useContext, useState } from 'react';
 import Context from '../../context';
 import { CREATE_PIN_MUTATION } from '../../graphql/mutations';
+import { useGraphql } from '../../hooks/useGraphql';
 import { DISCARD_DRAFT_PIN } from '../../types';
 
 const CreatePin = ({ classes }) => {
   const { state, dispatch } = useContext(Context);
+  const { client } = useGraphql();
   const [title, setTitle] = useState('');
   const [image, setImage] = useState(null);
   const [content, setContent] = useState('');
@@ -25,11 +26,6 @@ const CreatePin = ({ classes }) => {
     setIsSubmitting(true);
 
     try {
-      const idToken = window.gapi.auth2
-        .getAuthInstance()
-        .currentUser.get()
-        .getAuthResponse().id_token;
-
       const url = await uploadImage();
       const { longitude, latitude } = state.draft;
       const variables = {
@@ -39,10 +35,6 @@ const CreatePin = ({ classes }) => {
         longitude,
         latitude
       };
-
-      const client = new GraphQLClient('http://localhost:4000/graphql', {
-        headers: { authorization: idToken }
-      });
 
       const { createPin } = await client.request(
         CREATE_PIN_MUTATION,

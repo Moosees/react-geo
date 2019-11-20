@@ -5,6 +5,7 @@ import React, { useContext } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import Context from '../../context';
 import { ME_QUERY } from '../../graphql/queries';
+import { BASE_URL } from '../../hooks/useGraphql';
 import { LOGIN_USER } from '../../types';
 
 const Login = ({ classes }) => {
@@ -13,7 +14,7 @@ const Login = ({ classes }) => {
   const handleLogin = async googleUser => {
     try {
       const idToken = googleUser.getAuthResponse().id_token;
-      const client = new GraphQLClient('http://localhost:4000/graphql', {
+      const client = new GraphQLClient(BASE_URL, {
         headers: { authorization: idToken }
       });
       const { me } = await client.request(ME_QUERY);
