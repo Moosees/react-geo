@@ -3,8 +3,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import ReactMapGL, { Marker, NavigationControl } from 'react-map-gl';
 import Context from '../context';
 import { CREATE_DRAFT_PIN, UPDATE_DRAFT_PIN } from '../types';
+import { GET_PINS_QUERY } from '../graphql/queries';
 import Blog from './Blog';
 import PinIcon from './PinIcon';
+import { useGraphql } from '../hooks/useGraphql';
 // import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
 // import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
@@ -17,8 +19,19 @@ const INITIAL_VIEWPORT = {
 
 const MapView = ({ classes }) => {
   const { state, dispatch } = useContext(Context);
+  const { client } = useGraphql();
   const [viewport, setViewport] = useState(INITIAL_VIEWPORT);
   const [userPos, setUserPos] = useState(null);
+
+  useEffect(() => {
+    const getPins = async () => {
+      const { getPins } = await client.request(GET_PINS_QUERY);
+      console.log({ getPins });
+    };
+    if (client) {
+      getPins();
+    }
+  }, [client]);
 
   useEffect(() => {
     const getUserPosition = () => {
