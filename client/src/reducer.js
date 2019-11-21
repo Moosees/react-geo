@@ -22,7 +22,8 @@ const reducer = (state, { type, payload }) => {
         draft: {
           longitude: 0,
           latitude: 0
-        }
+        },
+        currentPin: null
       };
 
     case types.UPDATE_DRAFT_PIN:
@@ -54,6 +55,13 @@ const reducer = (state, { type, payload }) => {
       return {
         ...state,
         pins: newPins
+      };
+
+    case types.SET_PIN:
+      return {
+        ...state,
+        draft: null,
+        currentPin: payload
       };
 
     default:

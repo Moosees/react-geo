@@ -1,16 +1,17 @@
+import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import DeleteIcon from '@material-ui/icons/DeleteTwoTone';
 import { differenceInMinutes } from 'date-fns';
 import React, { useContext, useEffect, useState } from 'react';
-import ReactMapGL, { Marker, NavigationControl } from 'react-map-gl';
+import ReactMapGL, { Marker, NavigationControl, Popup } from 'react-map-gl';
 import Context from '../context';
 import { GET_PINS_QUERY } from '../graphql/queries';
 import { useGraphql } from '../hooks/useGraphql';
-import { CREATE_DRAFT_PIN, GET_PINS, UPDATE_DRAFT_PIN } from '../types';
+// prettier-ignore
+import { CREATE_DRAFT_PIN, GET_PINS, SET_PIN, UPDATE_DRAFT_PIN } from '../types';
 import Blog from './Blog';
 import PinIcon from './PinIcon';
-// import Button from "@material-ui/core/Button";
-// import Typography from "@material-ui/core/Typography";
-// import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
 
 const INITIAL_VIEWPORT = {
   latitude: 52.5686,
@@ -23,6 +24,7 @@ const MapView = ({ classes }) => {
   const { client } = useGraphql();
   const [viewport, setViewport] = useState(INITIAL_VIEWPORT);
   const [userPos, setUserPos] = useState(null);
+  const [popup, setPopup] = useState(null);
 
   useEffect(() => {
     const getPins = async () => {
@@ -59,13 +61,21 @@ const MapView = ({ classes }) => {
     return isNewPin ? '#09f' : '#03f';
   };
 
+  const isAuthUser = () => state.currentUser._id === popup.author._id;
+
   const handleMapClick = ({ lngLat, leftButton }) => {
     if (!leftButton) return;
     if (!state.draft) {
       dispatch({ type: CREATE_DRAFT_PIN });
     }
+    setPopup(null);
     const [longitude, latitude] = lngLat;
     dispatch({ type: UPDATE_DRAFT_PIN, payload: { longitude, latitude } });
+  };
+
+  const handlePinClick = pin => {
+    setPopup(pin);
+    dispatch({ type: SET_PIN, payload: pin });
   };
 
   return (
@@ -84,6 +94,7 @@ const MapView = ({ classes }) => {
             onViewportChange={newViewport => setViewport(newViewport)}
           />
         </div>
+        {/* Current user location pin */}
         {userPos && (
           <Marker
             longitude={userPos.longitude}
@@ -94,6 +105,7 @@ const MapView = ({ classes }) => {
             <PinIcon size={40} color={'#f00'} />
           </Marker>
         )}
+        {/* Pin drafts */}
         {state.draft && (
           <Marker
             longitude={state.draft.longitude}
@@ -104,6 +116,7 @@ const MapView = ({ classes }) => {
             <PinIcon size={40} color={'#f0f'} />
           </Marker>
         )}
+        {/* Saved map pins */}
         {state.pins.map(pin => (
           <Marker
             key={pin._id}
@@ -112,9 +125,39 @@ const MapView = ({ classes }) => {
             offsetLeft={-19}
             offsetTop={-37}
           >
-            <PinIcon size={40} color={highlightNewPin(pin)} />
+            <PinIcon
+              size={40}
+              color={highlightNewPin(pin)}
+              onClick={() => handlePinClick(pin)}
+            />
           </Marker>
         ))}
+        {/* Selected pin popup */}
+        {popup && (
+          <Popup
+            anchor="top"
+            longitude={popup.longitude}
+            latitude={popup.latitude}
+            closeOnClick={false}
+            onClose={() => setPopup(null)}
+          >
+            <img
+              className={classes.popupImage}
+              src={popup.image}
+              alt={popup.title}
+            />
+            <div className={classes.popupTab}>
+              <Typography>
+                {popup.latitude.toFixed(6)}, {popup.longitude.toFixed(6)}
+              </Typography>
+              {isAuthUser() && (
+                <Button>
+                  <DeleteIcon className={classes.deleteIcon} />
+                </Button>
+              )}
+            </div>
+          </Popup>
+        )}
       </ReactMapGL>
       <Blog />
     </div>
