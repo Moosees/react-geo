@@ -1,12 +1,13 @@
 import { withStyles } from '@material-ui/core/styles';
+import { differenceInMinutes } from 'date-fns';
 import React, { useContext, useEffect, useState } from 'react';
 import ReactMapGL, { Marker, NavigationControl } from 'react-map-gl';
 import Context from '../context';
-import { CREATE_DRAFT_PIN, UPDATE_DRAFT_PIN, GET_PINS } from '../types';
 import { GET_PINS_QUERY } from '../graphql/queries';
+import { useGraphql } from '../hooks/useGraphql';
+import { CREATE_DRAFT_PIN, GET_PINS, UPDATE_DRAFT_PIN } from '../types';
 import Blog from './Blog';
 import PinIcon from './PinIcon';
-import { useGraphql } from '../hooks/useGraphql';
 // import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
 // import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
@@ -50,6 +51,13 @@ const MapView = ({ classes }) => {
     };
     getUserPosition();
   }, []);
+
+  const highlightNewPin = pin => {
+    const isNewPin =
+      differenceInMinutes(Date.now(), Number(pin.createdAt)) <= 60;
+
+    return isNewPin ? '#09f' : '#03f';
+  };
 
   const handleMapClick = ({ lngLat, leftButton }) => {
     if (!leftButton) return;
@@ -104,7 +112,7 @@ const MapView = ({ classes }) => {
             offsetLeft={-19}
             offsetTop={-37}
           >
-            <PinIcon size={40} color={'#03f'} />
+            <PinIcon size={40} color={highlightNewPin(pin)} />
           </Marker>
         ))}
       </ReactMapGL>
