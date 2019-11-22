@@ -6,10 +6,11 @@ import { differenceInMinutes } from 'date-fns';
 import React, { useContext, useEffect, useState } from 'react';
 import ReactMapGL, { Marker, NavigationControl, Popup } from 'react-map-gl';
 import Context from '../context';
+import { DELETE_PIN_MUTATION } from '../graphql/mutations';
 import { GET_PINS_QUERY } from '../graphql/queries';
 import { useGraphql } from '../hooks/useGraphql';
 // prettier-ignore
-import { CREATE_DRAFT_PIN, GET_PINS, SET_PIN, UPDATE_DRAFT_PIN } from '../types';
+import { CREATE_DRAFT_PIN, DELETE_PIN, GET_PINS, SET_PIN, UPDATE_DRAFT_PIN } from '../types';
 import Blog from './Blog';
 import PinIcon from './PinIcon';
 
@@ -76,6 +77,13 @@ const MapView = ({ classes }) => {
   const handlePinClick = pin => {
     setPopup(pin);
     dispatch({ type: SET_PIN, payload: pin });
+  };
+
+  const handleDeletePin = async pin => {
+    const variables = { pinId: pin._id };
+    const { deletePin } = await client.request(DELETE_PIN_MUTATION, variables);
+    dispatch({ type: DELETE_PIN, payload: deletePin });
+    setPopup(null);
   };
 
   return (
@@ -151,7 +159,7 @@ const MapView = ({ classes }) => {
                 {popup.latitude.toFixed(6)}, {popup.longitude.toFixed(6)}
               </Typography>
               {isAuthUser() && (
-                <Button>
+                <Button onClick={() => handleDeletePin(popup)}>
                   <DeleteIcon className={classes.deleteIcon} />
                 </Button>
               )}

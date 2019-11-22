@@ -6,3 +6,4 @@ export const DISCARD_DRAFT_PIN = 'DISCARD_DRAFT_PIN';
 export const GET_PINS = 'GET_PINS';
 export const CREATE_PIN = 'CREATE_PIN';
 export const SET_PIN = 'SET_PIN';
+export const DELETE_PIN = 'DELETE_PIN';

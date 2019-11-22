@@ -64,6 +64,16 @@ const reducer = (state, { type, payload }) => {
         currentPin: payload
       };
 
+    case types.DELETE_PIN:
+      const pinToDelete = payload;
+      const updatedPins = state.pins.filter(pin => pin._id !== pinToDelete._id);
+
+      return {
+        ...state,
+        pins: updatedPins,
+        currentPin: null
+      };
+
     default:
       return state;
   }
