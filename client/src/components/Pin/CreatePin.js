@@ -73,13 +73,8 @@ const CreatePin = ({ classes }) => {
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
-      <Typography
-        className={classes.alignCenter}
-        component="h2"
-        variant="h4"
-        color="secondary"
-      >
-        <LandscapeIcon className={classes.iconLarge} />
+      <LandscapeIcon className={classes.iconLarge} color="secondary" />
+      <Typography className={classes.alignCenter} component="h2" variant="h4">
         Pin Location
       </Typography>
       <div>

@@ -17,8 +17,8 @@ const Header = ({ classes }) => {
       <AppBar position="static">
         <Toolbar>
           <div className={classes.grow}>
-            <MapIcon className={classes.icon} />
-            <Typography component="h1" variant="h3" color="inherit" noWrap>
+            <MapIcon className={classes.icon} color="secondary" />
+            <Typography component="h1" variant="h4" color="inherit" noWrap>
               React-Geo
             </Typography>
           </div>
@@ -52,14 +52,13 @@ const styles = theme => ({
   },
   icon: {
     marginRight: theme.spacing(1),
-    color: 'green',
     fontSize: 45
   },
   mobile: {
     display: 'none'
   },
   picture: {
-    height: '50px',
+    height: '45px',
     borderRadius: '90%',
     marginRight: theme.spacing(2)
   }

@@ -31,13 +31,13 @@ const CreateComment = ({ classes }) => {
       <form className={classes.form} onSubmit={handleSubmit}>
         <IconButton
           className={classes.clearButton}
+          disabled={!comment.trim()}
           onClick={() => setComment('')}
         >
           <ClearIcon />
         </IconButton>
         <InputBase
           className={classes.input}
-          multiline
           placeholder="Add Comment"
           value={comment}
           onChange={evt => setComment(evt.target.value)}
@@ -58,7 +58,8 @@ const CreateComment = ({ classes }) => {
 const styles = theme => ({
   form: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: '1em 0.5em 0'
   },
   input: {
     marginLeft: 8,

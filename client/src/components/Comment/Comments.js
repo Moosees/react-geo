@@ -5,8 +5,8 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
+import React from 'react';
 
 const Comments = ({ classes, comments }) => (
   <List className={classes.root}>
@@ -26,7 +26,8 @@ const Comments = ({ classes, comments }) => (
                   color="textPrimary"
                 >
                   {comment.author.name}
-                </Typography>{' '}
+                </Typography>
+                {' · '}
                 {formatDistanceToNow(Number(comment.createdAt), {
                   addSuffix: true
                 })}
