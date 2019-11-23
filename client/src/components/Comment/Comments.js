@@ -6,6 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
+import { formatDistanceToNow } from 'date-fns';
 
 const Comments = ({ classes, comments }) => (
   <List className={classes.root}>
@@ -18,13 +19,18 @@ const Comments = ({ classes, comments }) => (
           <ListItemText
             primary={comment.text}
             secondary={
-              <Typography
-                className={classes.inline}
-                component="span"
-                color="textPrimary"
-              >
-                {comment.author.name}
-              </Typography>
+              <>
+                <Typography
+                  className={classes.inline}
+                  component="span"
+                  color="textPrimary"
+                >
+                  {comment.author.name}
+                </Typography>{' '}
+                {formatDistanceToNow(Number(comment.createdAt), {
+                  addSuffix: true
+                })}
+              </>
             }
           />
         </ListItem>

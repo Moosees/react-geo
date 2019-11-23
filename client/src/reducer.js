@@ -74,6 +74,18 @@ const reducer = (state, { type, payload }) => {
         currentPin: null
       };
 
+    case types.CREATE_COMMENT:
+      const commentedPin = payload;
+      const pinsWithNewComment = state.pins.map(pin =>
+        pin._id === commentedPin._id ? commentedPin : pin
+      );
+
+      return {
+        ...state,
+        pins: pinsWithNewComment,
+        currentPin: commentedPin
+      };
+
     default:
       return state;
   }
