@@ -1,5 +1,9 @@
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient } from 'apollo-client';
+import { WebSocketLink } from 'apollo-link-ws';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import React, { useContext, useReducer } from 'react';
+import { ApolloProvider } from 'react-apollo';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Context from './context';
@@ -8,10 +12,6 @@ import Splash from './pages/Splash';
 import ProtectedRoute from './ProtectedRoute';
 import reducer from './reducer';
 import * as serviceWorker from './serviceWorker';
-import { ApolloProvider } from 'react-apollo';
-import { ApolloClient } from 'apollo-client';
-import { WebSocketLink } from 'apollo-link-ws';
-import { InMemoryCache } from 'apollo-cache-inmemory';
 
 const wsLink = new WebSocketLink({
   uri: 'ws://localhost:4000/graphql',

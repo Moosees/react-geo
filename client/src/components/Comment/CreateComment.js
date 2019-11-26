@@ -8,21 +8,16 @@ import React, { useContext, useState } from 'react';
 import Context from '../../context';
 import { CREATE_COMMENT_MUTATION } from '../../graphql/mutations';
 import { useGraphql } from '../../hooks/useGraphql';
-import { CREATE_COMMENT } from '../../types';
 
 const CreateComment = ({ classes }) => {
-  const { state, dispatch } = useContext(Context);
+  const { state } = useContext(Context);
   const { client } = useGraphql();
   const [comment, setComment] = useState('');
 
   const handleSubmit = async evt => {
     evt.preventDefault();
     const variables = { pinId: state.currentPin._id, text: comment };
-    const { createComment } = await client.request(
-      CREATE_COMMENT_MUTATION,
-      variables
-    );
-    dispatch({ type: CREATE_COMMENT, payload: createComment });
+    await client.request(CREATE_COMMENT_MUTATION, variables);
     setComment('');
   };
 
