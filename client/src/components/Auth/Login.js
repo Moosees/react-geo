@@ -6,7 +6,7 @@ import { GoogleLogin } from 'react-google-login';
 import Context from '../../context';
 import { ME_QUERY } from '../../graphql/queries';
 import { BASE_URL } from '../../hooks/useGraphql';
-import { LOGIN_USER } from '../../types';
+import { LOGIN_USER, LOGOUT_USER } from '../../types';
 
 const Login = ({ classes }) => {
   const { dispatch } = useContext(Context);
@@ -27,6 +27,7 @@ const Login = ({ classes }) => {
 
   const handleFailure = err => {
     console.error('Login failed', err);
+    dispatch({ type: LOGOUT_USER });
   };
 
   return (
