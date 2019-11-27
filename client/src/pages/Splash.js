@@ -6,7 +6,7 @@ import Context from '../context';
 const Splash = () => {
   const { state } = useContext(Context);
 
-  return state.googleUser ? <Redirect to="/" /> : <Login />;
+  return state.isSignedIn ? <Redirect to="/" /> : <Login />;
 };
 
 export default Splash;

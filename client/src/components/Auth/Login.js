@@ -19,7 +19,10 @@ const Login = ({ classes }) => {
       });
       const { me } = await client.request(ME_QUERY);
 
-      dispatch({ type: LOGIN_USER, payload: { currentUser: me, googleUser } });
+      dispatch({
+        type: LOGIN_USER,
+        payload: { currentUser: me, isSignedIn: googleUser.isSignedIn() }
+      });
     } catch (err) {
       handleFailure(err);
     }

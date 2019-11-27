@@ -6,14 +6,14 @@ const reducer = (state, { type, payload }) => {
       return {
         ...state,
         currentUser: payload.currentUser,
-        googleUser: payload.googleUser
+        isSignedIn: payload.isSignedIn
       };
 
     case types.LOGOUT_USER:
       return {
         ...state,
         currentUser: null,
-        googleUser: null
+        isSignedIn: false
       };
 
     case types.CREATE_DRAFT_PIN:
