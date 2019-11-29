@@ -1,3 +1,4 @@
+import { useMediaQuery } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ExitToApp from '@material-ui/icons/ExitToApp';
@@ -8,6 +9,7 @@ import { LOGOUT_USER } from '../../types';
 
 const Logout = ({ classes }) => {
   const { dispatch } = useContext(Context);
+  const mobileSize = useMediaQuery('(max-width: 650px)');
 
   const handleLogout = () => {
     dispatch({ type: LOGOUT_USER });
@@ -19,9 +21,11 @@ const Logout = ({ classes }) => {
       clientId="979136694083-n0fs310alq1bf5a5dn53ahr3vsr2dpld.apps.googleusercontent.com"
       render={({ onClick }) => (
         <span className={classes.root} onClick={onClick}>
-          <Typography variant="body1" color="secondary">
-            Log out
-          </Typography>
+          {!mobileSize && (
+            <Typography variant="body1" color="secondary">
+              Log out
+            </Typography>
+          )}
           <ExitToApp className={classes.buttonIcon} color="secondary" />
         </span>
       )}

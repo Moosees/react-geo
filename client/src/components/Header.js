@@ -1,3 +1,4 @@
+import { useMediaQuery } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import { withStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -11,6 +12,7 @@ const Header = ({ classes }) => {
   const {
     state: { currentUser }
   } = useContext(Context);
+  const mobileSize = useMediaQuery('(max-width: 650px)');
 
   return (
     <div className={classes.root}>
@@ -18,7 +20,13 @@ const Header = ({ classes }) => {
         <Toolbar>
           <div className={classes.grow}>
             <MapIcon className={classes.icon} color="secondary" />
-            <Typography component="h1" variant="h4" color="inherit" noWrap>
+            <Typography
+              className={mobileSize ? classes.mobile : ''}
+              component="h1"
+              variant="h4"
+              color="inherit"
+              noWrap
+            >
               React-Geo
             </Typography>
           </div>
@@ -29,7 +37,12 @@ const Header = ({ classes }) => {
                 src={currentUser.picture}
                 alt={`${currentUser.name} avatar`}
               />
-              <Typography variant="h5" color="inherit" noWrap>
+              <Typography
+                className={mobileSize ? classes.mobile : ''}
+                variant="h5"
+                color="inherit"
+                noWrap
+              >
                 {currentUser.name}
               </Typography>
             </div>

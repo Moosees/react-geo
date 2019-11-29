@@ -1,3 +1,4 @@
+import { useMediaQuery } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -20,6 +21,7 @@ const CreatePin = ({ classes }) => {
   const [image, setImage] = useState(null);
   const [content, setContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const mobileSize = useMediaQuery('(max-width: 650px)');
 
   const handleSubmit = async evt => {
     evt.preventDefault();
@@ -103,7 +105,7 @@ const CreatePin = ({ classes }) => {
           label="Description"
           fullWidth
           multiline
-          rows="6"
+          rows={mobileSize ? '3' : '6'}
           variant="outlined"
           value={content}
           onChange={evt => setContent(evt.target.value)}

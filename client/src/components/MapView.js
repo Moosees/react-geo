@@ -1,3 +1,4 @@
+import { useMediaQuery } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -29,6 +30,8 @@ const MapView = ({ classes }) => {
   const [viewport, setViewport] = useState(INITIAL_VIEWPORT);
   const [userPos, setUserPos] = useState(null);
   const [popup, setPopup] = useState(null);
+
+  const mobileSize = useMediaQuery('(max-width: 650px)');
 
   useEffect(() => {
     const getPins = async () => {
@@ -89,11 +92,12 @@ const MapView = ({ classes }) => {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={mobileSize ? classes.rootMobile : classes.root}>
       <ReactMapGL
         mapStyle="mapbox://styles/mapbox/outdoors-v11"
         height="calc(100vh - 64px)"
         width="100vw"
+        scrollZoom={!mobileSize}
         onViewportChange={newViewport => setViewport(newViewport)}
         onClick={handleMapClick}
         mapboxApiAccessToken="pk.eyJ1IjoibW9vc2VlcyIsImEiOiJjazJqaTA2cnQwdWwzM25tbGV3MmUyZDMyIn0.NXfml-n3t3OXiWg9P7WuWQ"
