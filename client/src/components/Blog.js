@@ -40,7 +40,7 @@ const styles = {
   },
   rootMobile: {
     maxWidth: '100%',
-    maxHeight: 300,
+    height: 250,
     overflowX: 'hidden',
     overflowY: 'scroll'
   }

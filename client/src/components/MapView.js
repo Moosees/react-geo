@@ -30,7 +30,6 @@ const MapView = ({ classes }) => {
   const [viewport, setViewport] = useState(INITIAL_VIEWPORT);
   const [userPos, setUserPos] = useState(null);
   const [popup, setPopup] = useState(null);
-
   const mobileSize = useMediaQuery('(max-width: 650px)');
 
   useEffect(() => {
@@ -93,86 +92,88 @@ const MapView = ({ classes }) => {
 
   return (
     <div className={mobileSize ? classes.rootMobile : classes.root}>
-      <ReactMapGL
-        mapStyle="mapbox://styles/mapbox/outdoors-v11"
-        height="calc(100vh - 64px)"
-        width="100vw"
-        scrollZoom={!mobileSize}
-        onViewportChange={newViewport => setViewport(newViewport)}
-        onClick={handleMapClick}
-        mapboxApiAccessToken="pk.eyJ1IjoibW9vc2VlcyIsImEiOiJjazJqaTA2cnQwdWwzM25tbGV3MmUyZDMyIn0.NXfml-n3t3OXiWg9P7WuWQ"
-        {...viewport}
-      >
-        <div className={classes.navigationControl}>
-          <NavigationControl
-            onViewportChange={newViewport => setViewport(newViewport)}
-          />
-        </div>
-        {/* Current user location pin */}
-        {userPos && (
-          <Marker
-            longitude={userPos.longitude}
-            latitude={userPos.latitude}
-            offsetLeft={-19}
-            offsetTop={-37}
-          >
-            <PinIcon size={40} color={'#f00'} />
-          </Marker>
-        )}
-        {/* Pin drafts */}
-        {state.draft && (
-          <Marker
-            longitude={state.draft.longitude}
-            latitude={state.draft.latitude}
-            offsetLeft={-19}
-            offsetTop={-37}
-          >
-            <PinIcon size={40} color={'#f0f'} />
-          </Marker>
-        )}
-        {/* Saved map pins */}
-        {state.pins.map(pin => (
-          <Marker
-            key={pin._id}
-            longitude={pin.longitude}
-            latitude={pin.latitude}
-            offsetLeft={-19}
-            offsetTop={-37}
-          >
-            <PinIcon
-              size={40}
-              color={highlightNewPin(pin)}
-              onClick={() => handlePinClick(pin)}
+      <div className={mobileSize ? classes.mapMobile : classes.map}>
+        <ReactMapGL
+          {...viewport}
+          height="100%"
+          width="100%"
+          mapStyle="mapbox://styles/mapbox/outdoors-v11"
+          scrollZoom={!mobileSize}
+          onViewportChange={newViewport => setViewport(newViewport)}
+          onClick={handleMapClick}
+          mapboxApiAccessToken="pk.eyJ1IjoibW9vc2VlcyIsImEiOiJjazJqaTA2cnQwdWwzM25tbGV3MmUyZDMyIn0.NXfml-n3t3OXiWg9P7WuWQ"
+        >
+          <div className={classes.navigationControl}>
+            <NavigationControl
+              onViewportChange={newViewport => setViewport(newViewport)}
             />
-          </Marker>
-        ))}
-        {/* Selected pin popup */}
-        {popup && (
-          <Popup
-            anchor="top"
-            longitude={popup.longitude}
-            latitude={popup.latitude}
-            closeOnClick={false}
-            onClose={() => setPopup(null)}
-          >
-            <img
-              className={classes.popupImage}
-              src={popup.image}
-              alt={popup.title}
-            />
-            <div className={classes.popupTab}>
-              <Typography>
-                {popup.latitude.toFixed(6)}, {popup.longitude.toFixed(6)}
-              </Typography>
-              {isAuthUser() && (
-                <Button onClick={() => handleDeletePin(popup)}>
-                  <DeleteIcon className={classes.deleteIcon} />
-                </Button>
-              )}
-            </div>
-          </Popup>
-        )}
-      </ReactMapGL>
+          </div>
+          {/* Current user location pin */}
+          {userPos && (
+            <Marker
+              longitude={userPos.longitude}
+              latitude={userPos.latitude}
+              offsetLeft={-19}
+              offsetTop={-37}
+            >
+              <PinIcon size={40} color={'#f00'} />
+            </Marker>
+          )}
+          {/* Pin drafts */}
+          {state.draft && (
+            <Marker
+              longitude={state.draft.longitude}
+              latitude={state.draft.latitude}
+              offsetLeft={-19}
+              offsetTop={-37}
+            >
+              <PinIcon size={40} color={'#f0f'} />
+            </Marker>
+          )}
+          {/* Saved map pins */}
+          {state.pins.map(pin => (
+            <Marker
+              key={pin._id}
+              longitude={pin.longitude}
+              latitude={pin.latitude}
+              offsetLeft={-19}
+              offsetTop={-37}
+            >
+              <PinIcon
+                size={40}
+                color={highlightNewPin(pin)}
+                onClick={() => handlePinClick(pin)}
+              />
+            </Marker>
+          ))}
+          {/* Selected pin popup */}
+          {popup && (
+            <Popup
+              anchor="top"
+              longitude={popup.longitude}
+              latitude={popup.latitude}
+              closeOnClick={false}
+              onClose={() => setPopup(null)}
+            >
+              <img
+                className={classes.popupImage}
+                src={popup.image}
+                alt={popup.title}
+              />
+              <div className={classes.popupTab}>
+                <Typography>
+                  {popup.latitude.toFixed(6)}, {popup.longitude.toFixed(6)}
+                </Typography>
+                {isAuthUser() && (
+                  <Button onClick={() => handleDeletePin(popup)}>
+                    <DeleteIcon className={classes.deleteIcon} />
+                  </Button>
+                )}
+              </div>
+            </Popup>
+          )}
+        </ReactMapGL>
+      </div>
       <Blog />
       {/* graphql subscriptions */}
       <Subscription
@@ -207,6 +208,14 @@ const styles = {
   rootMobile: {
     display: 'flex',
     flexDirection: 'column-reverse'
+  },
+  map: {
+    height: 'calc(100vh - 64px)',
+    width: '100vw'
+  },
+  mapMobile: {
+    height: 'calc(100vh - 306px)',
+    width: '100vw'
   },
   navigationControl: {
     position: 'absolute',
