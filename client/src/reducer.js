@@ -67,21 +67,20 @@ const reducer = (state, { type, payload }) => {
     case types.DELETE_PIN:
       const pinToDelete = payload;
       const updatedPins = state.pins.filter(pin => pin._id !== pinToDelete._id);
-
+      let isCurrentPin = false;
       if (state.currentPin) {
-        const isCurrentPin = pinToDelete._id === state.currentPin._id;
-
-        return isCurrentPin
-          ? {
-              ...state,
-              pins: updatedPins,
-              currentPin: null
-            }
-          : {
-              ...state,
-              pins: updatedPins
-            };
+        isCurrentPin = pinToDelete._id === state.currentPin._id;
       }
+      return isCurrentPin
+        ? {
+            ...state,
+            pins: updatedPins,
+            currentPin: null
+          }
+        : {
+            ...state,
+            pins: updatedPins
+          };
 
     case types.CREATE_COMMENT:
       const commentedPin = payload;

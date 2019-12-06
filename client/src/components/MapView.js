@@ -62,11 +62,11 @@ const MapView = ({ classes }) => {
 
   useEffect(() => {
     const pinExists =
-      pupup && state.pins.findIndex(pin => pin._id === popup._id) > -1;
+      popup && state.pins.findIndex(pin => pin._id === popup._id) > -1;
     if (!pinExists) {
       setPopup(null);
     }
-  }, [state.pins.length]);
+  }, [state.pins, popup]);
 
   const highlightNewPin = pin => {
     const isNewPin =
