@@ -14,7 +14,10 @@ import reducer from './reducer';
 import * as serviceWorker from './serviceWorker';
 
 const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:4000/graphql',
+  uri:
+    process.env.NODE_ENV === 'production'
+      ? 'wss://react-geo.herokuapp.com/graphql'
+      : 'ws://localhost:4000/graphql',
   options: {
     reconnect: true
   }
