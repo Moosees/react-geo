@@ -60,6 +60,14 @@ const MapView = ({ classes }) => {
     getUserPosition();
   }, []);
 
+  useEffect(() => {
+    const pinExists =
+      pupup && state.pins.findIndex(pin => pin._id === popup._id) > -1;
+    if (!pinExists) {
+      setPopup(null);
+    }
+  }, [state.pins.length]);
+
   const highlightNewPin = pin => {
     const isNewPin =
       differenceInMinutes(Date.now(), Number(pin.createdAt)) <= 60;
