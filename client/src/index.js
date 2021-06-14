@@ -1,9 +1,8 @@
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloClient } from 'apollo-client';
-import { WebSocketLink } from 'apollo-link-ws';
+import { ApolloClient, ApolloProvider } from '@apollo/client';
+import { InMemoryCache } from '@apollo/client/cache';
+import { WebSocketLink } from '@apollo/client/link/ws';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import React, { useContext, useReducer } from 'react';
-import { ApolloProvider } from 'react-apollo';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Context from './context';
@@ -13,19 +12,19 @@ import ProtectedRoute from './ProtectedRoute';
 import reducer from './reducer';
 import * as serviceWorker from './serviceWorker';
 
+// inMemoryCache and WebSocketLink needs fixes
+
 const wsLink = new WebSocketLink({
   uri:
-    process.env.NODE_ENV === 'production'
-      ? 'wss://react-geo.herokuapp.com/graphql'
-      : 'ws://localhost:4000/graphql',
+    process.env.NODE_ENV === 'production' ? '' : 'ws://localhost:4000/graphql',
   options: {
-    reconnect: true
-  }
+    reconnect: true,
+  },
 });
 
 const client = new ApolloClient({
   link: wsLink,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 });
 
 const Root = () => {
